@@ -1,5 +1,6 @@
 package com.semicolon.africa.elibrarysystem.controller;
 
+import com.semicolon.africa.elibrarysystem.dto.request.LoginRequest;
 import com.semicolon.africa.elibrarysystem.dto.request.RegisterUserRequest;
 import com.semicolon.africa.elibrarysystem.dto.response.ApiResponse;
 import com.semicolon.africa.elibrarysystem.dto.response.RegisterUserResponse;
@@ -24,6 +25,15 @@ public class UserController {
        }catch (Exception e){
            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
        }
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login (@RequestBody @Valid LoginRequest loginRequest) {
+        try{
+            String response = userService.login(loginRequest);
+            return new ResponseEntity<>(new ApiResponse(true,response), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
