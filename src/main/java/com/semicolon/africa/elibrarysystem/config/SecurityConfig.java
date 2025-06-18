@@ -32,9 +32,14 @@ public class SecurityConfig {
           http
                   .csrf(customizer -> customizer.disable())
                   .authorizeHttpRequests(request -> request
-                          .requestMatchers("/register").permitAll()
+                          .requestMatchers("/registerUser").permitAll()
                           .requestMatchers("/login").permitAll()
-                          .requestMatchers("/upload").hasRole("SELLER")
+                          .requestMatchers("/addBook").hasRole("ADMIN")
+                          .requestMatchers("/deleteBook").hasRole("ADMIN")
+                          .requestMatchers("/updateBook").hasRole("ADMIN")
+                          .requestMatchers("/viewAllBooks").hasRole("ADMIN")
+                          .requestMatchers("/borrowBook").hasRole("USER")
+                          .requestMatchers("/returnBook").hasRole("USER")
                           .anyRequest().authenticated())
                   .httpBasic(Customizer.withDefaults())
                   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

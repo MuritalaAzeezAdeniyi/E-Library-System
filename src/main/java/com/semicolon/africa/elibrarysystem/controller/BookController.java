@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,8 @@ import java.util.UUID;
 public class BookController {
     @Autowired
     private BookService bookService;
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addBook")
     public ResponseEntity<?> addBook(@RequestBody @Valid AddBookRequest addBookRequest) {
         try{
@@ -31,6 +35,7 @@ public class BookController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/borrowBook")
     public ResponseEntity<?> borrowBook(@RequestBody @Valid BorrowBookRequest borrowBookRequest) {
         try{
@@ -41,6 +46,7 @@ public class BookController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/returnBook")
     public ResponseEntity<?> returnBook(UUID recordId){
         try{
@@ -51,6 +57,8 @@ public class BookController {
         }
 
     }
+
+    @PreAuthorize("hasRole('AMIN')")
     @PostMapping("/deleteBook")
     public ResponseEntity<?> deleteBook(UUID bookId){
         try{
@@ -60,12 +68,21 @@ public class BookController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/updateBook")
     public ResponseEntity<?> updateBook(@RequestBody @Valid UpdateBookRequest updateBookRequest){
         try{
             String response = bookService.UpdateBook(updateBookRequest);
             return new ResponseEntity<>(new ApiResponse(true,response), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/viewAllBooks")
+    public ResponseEntity<?> getAllBooks(){
+        try{
+            return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

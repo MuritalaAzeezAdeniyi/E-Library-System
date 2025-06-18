@@ -27,8 +27,8 @@ public class BookServiceTest {
     @Test
     public void testThatUserCanBorrowBook(){
        BorrowBookRequest borrowBookRequest = new BorrowBookRequest();
-       borrowBookRequest.setUserID(c36f4b52-a143-4494-8b85-dd678b4c651c);
-       borrowBookRequest.setBookID(ca092631-517b-479f-9000-24e2ceafb19b);
+//       borrowBookRequest.setUserID(c36f4b52-a143-4494-8b85-dd678b4c651c);
+//       borrowBookRequest.setBookID(ca092631-517b-479f-9000-24e2ceafb19b);
 
 
     }
