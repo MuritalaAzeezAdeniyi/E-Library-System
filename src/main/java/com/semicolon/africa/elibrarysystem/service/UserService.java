@@ -9,4 +9,5 @@ import com.semicolon.africa.elibrarysystem.exception.InvalidCredentialException;
 public interface UserService {
     RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) throws InvalidCredentialException;
     String login(LoginRequest loginRequest) throws InvalidCredentialException;
+
 }

@@ -7,19 +7,19 @@ import java.util.UUID;
 public class Users {
     @Id
     @GeneratedValue
-    private UUID id;
+    private UUID userId;
     private String username;
     private String password;
     private String email;
    @Enumerated(EnumType.STRING)
     private Role role;
 
-    public UUID getId() {
-        return id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUserId(UUID id) {
+        this.userId = id;
     }
 
     public String getUsername() {
