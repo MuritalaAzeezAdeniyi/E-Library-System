@@ -2,6 +2,7 @@ package com.semicolon.africa.elibrarysystem.service.Implement;
 
 import com.semicolon.africa.elibrarysystem.dto.request.AddBookRequest;
 import com.semicolon.africa.elibrarysystem.dto.request.BorrowBookRequest;
+import com.semicolon.africa.elibrarysystem.dto.request.UpdateBookRequest;
 import com.semicolon.africa.elibrarysystem.dto.response.AddBookResponse;
 import com.semicolon.africa.elibrarysystem.model.Book;
 import com.semicolon.africa.elibrarysystem.model.BorrowRecord;
@@ -98,6 +99,15 @@ public class BookServiceImpl implements BookService {
     public String deleteBook(UUID BookId) {
         bookRepo.deleteById(BookId);
         return " Book deleted successfully";
+    }
+
+    @Override
+    public String UpdateBook(UpdateBookRequest updateBookRequest) {
+        Book book = bookRepo.findByBookId(updateBookRequest.getId())
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        book.setAuthor(updateBookRequest.getAuthor());
+        book.setTitle(updateBookRequest.getTitle());
+        return "Successfully updated the book";
     }
 
 

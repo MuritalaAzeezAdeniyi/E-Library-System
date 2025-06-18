@@ -2,6 +2,7 @@ package com.semicolon.africa.elibrarysystem.controller;
 
 import com.semicolon.africa.elibrarysystem.dto.request.AddBookRequest;
 import com.semicolon.africa.elibrarysystem.dto.request.BorrowBookRequest;
+import com.semicolon.africa.elibrarysystem.dto.request.UpdateBookRequest;
 import com.semicolon.africa.elibrarysystem.dto.response.AddBookResponse;
 import com.semicolon.africa.elibrarysystem.dto.response.ApiResponse;
 import com.semicolon.africa.elibrarysystem.service.BookService;
@@ -54,6 +55,16 @@ public class BookController {
     public ResponseEntity<?> deleteBook(UUID bookId){
         try{
             String response = bookService.deleteBook(bookId);
+            return new ResponseEntity<>(new ApiResponse(true,response), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/updateBook")
+    public ResponseEntity<?> updateBook(@RequestBody @Valid UpdateBookRequest updateBookRequest){
+        try{
+            String response = bookService.UpdateBook(updateBookRequest);
             return new ResponseEntity<>(new ApiResponse(true,response), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
