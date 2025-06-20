@@ -2,6 +2,8 @@ package com.semicolon.africa.elibrarysystem.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 @Entity
 public class Book {
@@ -13,6 +15,9 @@ public class Book {
     private String author;
     private int totalCopy;
     private int availableCopy;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BorrowRecord> borrowHistory = new ArrayList<>();
 
 
     public UUID getBookId() {

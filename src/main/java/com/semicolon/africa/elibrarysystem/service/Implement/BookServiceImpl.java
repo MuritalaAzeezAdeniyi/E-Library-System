@@ -4,6 +4,7 @@ import com.semicolon.africa.elibrarysystem.dto.request.AddBookRequest;
 import com.semicolon.africa.elibrarysystem.dto.request.BorrowBookRequest;
 import com.semicolon.africa.elibrarysystem.dto.request.UpdateBookRequest;
 import com.semicolon.africa.elibrarysystem.dto.response.AddBookResponse;
+import com.semicolon.africa.elibrarysystem.dto.response.BookNotFoundException;
 import com.semicolon.africa.elibrarysystem.model.Book;
 import com.semicolon.africa.elibrarysystem.model.BorrowRecord;
 import com.semicolon.africa.elibrarysystem.model.Users;
@@ -81,7 +82,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public String returnBook(UUID recordId) {
         BorrowRecord record = borrowRepo.findBorrowRecordById(recordId)
-                .orElseThrow(()-> new RuntimeException("Record not found"));
+                .orElseThrow(() -> new RuntimeException("Record not found"));
         if (record.isReturned()) {
             return "Book Already returned";
         }
@@ -97,8 +98,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String deleteBook(UUID BookId) {
-        bookRepo.deleteById(BookId);
+    public String deleteBook(UUID bookId) {
+        Book book = bookRepo.findByBookId(bookId)
+                        .orElseThrow(() -> new BookNotFoundException("Book with Id" + bookId + " not found" ));
+        book.setTotalCopy(book.getTotalCopy() - 1);
+        book.setAvailableCopy(book.getAvailableCopy() - 1);
+        bookRepo.deleteById(bookId);
         return " Book deleted successfully";
     }
 
@@ -114,6 +119,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAllBooks() {
         return bookRepo.findAll();
+    }
+
+    @Override
+    public Book viewBookById(UUID BookId) {
+        return bookRepo.findByBookId(BookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
 

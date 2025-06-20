@@ -16,4 +16,5 @@ public interface BookService {
     String deleteBook (UUID id);
     String UpdateBook (UpdateBookRequest updateBookRequest);
     List<Book> getAllBooks();
+    Book viewBookById (UUID id);
 }

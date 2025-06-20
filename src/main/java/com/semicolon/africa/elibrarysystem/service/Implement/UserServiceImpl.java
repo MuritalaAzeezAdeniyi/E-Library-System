@@ -5,6 +5,8 @@ import com.semicolon.africa.elibrarysystem.dto.request.RegisterUserRequest;
 import com.semicolon.africa.elibrarysystem.dto.response.RegisterUserResponse;
 import com.semicolon.africa.elibrarysystem.exception.InvalidCredentialException;
 import com.semicolon.africa.elibrarysystem.exception.UserAlreadyExistException;
+import com.semicolon.africa.elibrarysystem.exception.UserNotFoundException;
+import com.semicolon.africa.elibrarysystem.model.Book;
 import com.semicolon.africa.elibrarysystem.model.Users;
 import com.semicolon.africa.elibrarysystem.repository.UsersRepo;
 import com.semicolon.africa.elibrarysystem.service.JWTService;
@@ -17,6 +19,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -66,6 +70,15 @@ public class UserServiceImpl implements UserService {
         } catch (BadCredentialsException ex) {
             throw new InvalidCredentialException("Invalid username or password");
         }
+    }
+
+    @Override
+    public String DeleteUserAccount(UUID userId) throws InvalidCredentialException {
+        if(!usersRepository.existsById(userId)){
+            throw new UserNotFoundException("User with the id "+ userId + "not found");
+        }
+        usersRepository.deleteById(userId);
+        return "Account Deleted Successfully";
     }
 
 
